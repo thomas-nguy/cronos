@@ -27,9 +27,11 @@ func (k Keeper) CallEVM(ctx sdk.Context, to *common.Address, data []byte, value 
 		value, // amount
 		config.DefaultGasCap,
 		big.NewInt(0), // gasPrice
-		data,
 		nil,   // accessList
-		false, // checkNonce
+		nil, // checkNonce,
+		data,
+		nil,
+		false,
 	)
 
 	params := k.evmKeeper.GetParams(ctx)
@@ -39,15 +41,7 @@ func (k Keeper) CallEVM(ctx sdk.Context, to *common.Address, data []byte, value 
 	} else if !params.EnableCall && to != nil {
 		return nil, nil, errors.New("failed to call contract")
 	}
-	ethCfg := params.ChainConfig.EthereumConfig(k.evmKeeper.ChainID())
-
-	// get the coinbase address from the block proposer
-	coinbase, err := k.evmKeeper.GetCoinbaseAddress(ctx)
-	if err != nil {
-		return nil, nil, errors.New("failed to obtain coinbase address")
-	}
-	evm := k.evmKeeper.NewEVM(msg, ethCfg, params, coinbase, types.NewDummyTracer())
-	ret, err := k.evmKeeper.ApplyMessage(evm, msg, ethCfg, true)
+	ret, err := k.evmKeeper.ApplyMessage(msg, types.NewDummyTracer(), true)
 	if err != nil {
 		return nil, nil, err
 	}

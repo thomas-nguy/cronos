@@ -21,3 +21,10 @@ func (dt DummyTracer) CaptureState(env *vm.EVM, pc uint64, op vm.OpCode, gas, co
 func (dt DummyTracer) CaptureFault(env *vm.EVM, pc uint64, op vm.OpCode, gas, cost uint64, scope *vm.ScopeContext, depth int, err error) {
 }
 func (dt DummyTracer) CaptureEnd(output []byte, gasUsed uint64, t time.Duration, err error) {}
+
+func (dt DummyTracer) CaptureEnter(typ vm.OpCode, from common.Address, to common.Address, input []byte, gas uint64, value *big.Int) {
+
+}
+func (dt DummyTracer) CaptureExit(output []byte, gasUsed uint64, err error) {
+
+}
