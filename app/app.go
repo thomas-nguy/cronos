@@ -1,13 +1,6 @@
 package app
 
 import (
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/tharsis/ethermint/x/feemarket"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/gorilla/mux"
@@ -17,6 +10,11 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
+	"github.com/tharsis/ethermint/x/feemarket"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client/grpc/tmservice"
@@ -85,16 +83,15 @@ import (
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 
 	appparams "github.com/cosmos/cosmos-sdk/simapp/params"
-	"github.com/cosmos/ibc-go/modules/apps/transfer"
-	ibctransferkeeper "github.com/cosmos/ibc-go/modules/apps/transfer/keeper"
-	ibctransfertypes "github.com/cosmos/ibc-go/modules/apps/transfer/types"
-	ibc "github.com/cosmos/ibc-go/modules/core"
-	ibcclient "github.com/cosmos/ibc-go/modules/core/02-client"
-	ibcclientclient "github.com/cosmos/ibc-go/modules/core/02-client/client"
-	porttypes "github.com/cosmos/ibc-go/modules/core/05-port/types"
-	ibchost "github.com/cosmos/ibc-go/modules/core/24-host"
-	ibckeeper "github.com/cosmos/ibc-go/modules/core/keeper"
-	ibckeeperv2 "github.com/cosmos/ibc-go/v2/modules/core/keeper"
+	"github.com/cosmos/ibc-go/v2/modules/apps/transfer"
+	ibctransferkeeper "github.com/cosmos/ibc-go/v2/modules/apps/transfer/keeper"
+	ibctransfertypes "github.com/cosmos/ibc-go/v2/modules/apps/transfer/types"
+	ibc "github.com/cosmos/ibc-go/v2/modules/core"
+	ibcclient "github.com/cosmos/ibc-go/v2/modules/core/02-client"
+	ibcclientclient "github.com/cosmos/ibc-go/v2/modules/core/02-client/client"
+	porttypes "github.com/cosmos/ibc-go/v2/modules/core/05-port/types"
+	ibchost "github.com/cosmos/ibc-go/v2/modules/core/24-host"
+	ibckeeper "github.com/cosmos/ibc-go/v2/modules/core/keeper"
 	tmjson "github.com/tendermint/tendermint/libs/json"
 
 	evmante "github.com/tharsis/ethermint/app/ante"
@@ -399,7 +396,7 @@ func New(
 		keys[cronostypes.MemStoreKey],
 		app.GetSubspace(cronostypes.ModuleName),
 		app.BankKeeper,
-		app.TransferKeeper,
+		nil,
 		app.EvmKeeper,
 	)
 	cronosModule := cronos.NewAppModule(appCodec, app.CronosKeeper)
@@ -414,7 +411,6 @@ func New(
 		AddRoute(cronostypes.RouterKey, cronos.NewTokenMappingChangeProposalHandler(app.CronosKeeper))
 
 	// Set IBC hooks
-	app.TransferKeeper = *app.TransferKeeper.SetHooks(app.CronosKeeper)
 	transferModule := transfer.NewAppModule(app.TransferKeeper)
 
 	app.GovKeeper = govkeeper.NewKeeper(
@@ -568,19 +564,48 @@ func New(
 	app.SetBeginBlocker(app.BeginBlocker)
 
 	// use Ethermint's custom AnteHandler
-	// TODO remove
-	ibcKeeperv2 := ibckeeperv2.NewKeeper(
-		appCodec, keys[ibchost.StoreKey], app.GetSubspace(ibchost.ModuleName), app.StakingKeeper, app.UpgradeKeeper, scopedIBCKeeper,
-	)
 	app.SetAnteHandler(
 		evmante.NewAnteHandler(
-			app.AccountKeeper, app.BankKeeper, app.EvmKeeper, app.FeeGrantKeeper, ibcKeeperv2.ChannelKeeper,
+			app.AccountKeeper, app.BankKeeper, app.EvmKeeper, app.FeeGrantKeeper, app.IBCKeeper.ChannelKeeper,
 			app.FeeMarketKeeper,
 			encodingConfig.TxConfig.SignModeHandler(),
 		),
 	)
 
+
 	app.SetEndBlocker(app.EndBlocker)
+
+	// Upgrade
+	planName := "v2.0.0"
+	app.UpgradeKeeper.SetUpgradeHandler(planName, func(ctx sdk.Context, plan upgradetypes.Plan, _ module.VersionMap) (module.VersionMap, error) {
+		// 1st-time running in-store migrations, using 1 as fromVersion to
+		// avoid running InitGenesis.
+		fromVM := map[string]uint64{
+			"auth":         1,
+			"authz":        1,
+			"bank":         1,
+			"capability":   1,
+			"crisis":       1,
+			"distribution": 1,
+			"feegrant":     1,
+			"evidence":     1,
+			"gov":          1,
+			"mint":         1,
+			"params":       1,
+			"slashing":     1,
+			"staking":      1,
+			"upgrade":      1,
+			"vesting":      1,
+			"ibc":          1,
+			"genutil":      1,
+			"transfer":     1,
+			"evm":    		1,
+			"cronos":    1,
+		}
+
+		return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+	})
+
 
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
