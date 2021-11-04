@@ -4,10 +4,8 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/ibc-go/modules/apps/transfer/types"
 )
 
-var _ types.TransferHooks = Keeper{}
 
 func (k Keeper) AfterSendTransfer(
 	ctx sdk.Context,
