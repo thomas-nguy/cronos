@@ -11,7 +11,7 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/gorilla/mux v1.8.0
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
-	github.com/peggyjv/gravity-bridge/module v0.2.24-0.20211206214839-d22e7091a41d
+	github.com/peggyjv/gravity-bridge/module v0.3.8
 	github.com/rakyll/statik v0.1.7
 	github.com/spf13/cast v1.4.1
 	github.com/spf13/cobra v1.2.1
@@ -161,4 +161,6 @@ replace github.com/cosmos/iavl => github.com/cosmos/iavl v0.17.3
 
 // https://github.com/crypto-org-chain/ethermint/tree/v0.9.x-cronos
 // FIXME make a tag or point to upstream when ready
-replace github.com/tharsis/ethermint => github.com/crypto-org-chain/ethermint v0.6.1-0.20211207040748-254df3803d62
+replace github.com/tharsis/ethermint => github.com/crypto-org-chain/ethermint v0.6.1-0.20211223024613-64db56b665a7
+
+replace github.com/peggyjv/gravity-bridge/module => github.com/thomas-nguy/gravity-bridge/module v0.2.18-0.20220128031606-5dcb579146d8

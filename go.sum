@@ -233,8 +233,8 @@ github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d/go.mod h1:ma
 github.com/cpuguy83/go-md2man/v2 v2.0.0/go.mod h1:maD7wRr/U5Z6m/iR4s+kqSMx2CaBsrgA7czyZG/E6dU=
 github.com/creack/pty v1.1.7/go.mod h1:lj5s0c3V2DBrqTV7llrYr5NG6My20zk30Fl46Y7DoTY=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
-github.com/crypto-org-chain/ethermint v0.6.1-0.20211207040748-254df3803d62 h1:9/wTMiLSbgNPxpElwrVT6+Q4OzePFxb42Ws7+ur+nDg=
-github.com/crypto-org-chain/ethermint v0.6.1-0.20211207040748-254df3803d62/go.mod h1:5Nukk6Aobxjnx7HAJTUHqyd7s7zSxbtZ4EWlwGb3pFc=
+github.com/crypto-org-chain/ethermint v0.6.1-0.20211223024613-64db56b665a7 h1:Ln7wgWWQ/qBW62VwWu+0s/C6Lgf+Pb1nwxEaFIfGohU=
+github.com/crypto-org-chain/ethermint v0.6.1-0.20211223024613-64db56b665a7/go.mod h1:5Nukk6Aobxjnx7HAJTUHqyd7s7zSxbtZ4EWlwGb3pFc=
 github.com/crypto-org-chain/ibc-go/v2 v2.0.1-hooks h1:XzF2wdfSPrf1J5FpyBpbRT+Imb/bqSvRoXV/nlaX28Y=
 github.com/crypto-org-chain/ibc-go/v2 v2.0.1-hooks/go.mod h1:ZfePiHyAVzWvRafjDCI00huUnPjRgOn1FsOklO68AF0=
 github.com/crypto-org-chain/keyring v1.1.6-fixes h1:AUFSu56NY6XobY6XfRoDx6v3loiOrHK5MNUm32GEjwA=
@@ -806,8 +806,6 @@ github.com/pascaldekloe/goe v0.1.0/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144T
 github.com/paulbellamy/ratecounter v0.2.0/go.mod h1:Hfx1hDpSGoqxkVVpBi/IlYD7kChlfo5C6hzIHwPqfFE=
 github.com/pborman/uuid v0.0.0-20170112150404-1b00554d8222/go.mod h1:VyrYX9gd7irzKovcSS6BIIEwPRkP2Wm2m9ufcdFSJ34=
 github.com/pborman/uuid v1.2.0/go.mod h1:X/NO0urCmaxf9VXbdlT7C2Yzkj2IKimNn4k+gtPdI/k=
-github.com/peggyjv/gravity-bridge/module v0.2.24-0.20211206214839-d22e7091a41d h1:d5Syc0x3BNi7u0Ep7/GaqqDWO/W97AMRv/IMhu5xpcI=
-github.com/peggyjv/gravity-bridge/module v0.2.24-0.20211206214839-d22e7091a41d/go.mod h1:IFm0SoZGHzA8c6NH3YyRSl2sGT7qdxY+DimCrP2+J+4=
 github.com/pelletier/go-toml v1.2.0/go.mod h1:5z9KED0ma1S8pY6P1sdut58dfprrGBbd/94hg7ilaic=
 github.com/pelletier/go-toml v1.9.3/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pelletier/go-toml v1.9.4 h1:tjENF6MfZAg8e4ZmZTeWaWiT2vXtsoO6+iuOjFhECwM=
@@ -996,6 +994,8 @@ github.com/tendermint/tendermint v0.34.14 h1:GCXmlS8Bqd2Ix3TQCpwYLUNHe+Y+QyJsm5Y
 github.com/tendermint/tendermint v0.34.14/go.mod h1:FrwVm3TvsVicI9Z7FlucHV6Znfd5KBc/Lpp69cCwtk0=
 github.com/tendermint/tm-db v0.6.4 h1:3N2jlnYQkXNQclQwd/eKV/NzlqPlfK21cpRRIx80XXQ=
 github.com/tendermint/tm-db v0.6.4/go.mod h1:dptYhIpJ2M5kUuenLr+Yyf3zQOv1SgBZcl8/BmWlMBw=
+github.com/thomas-nguy/gravity-bridge/module v0.2.18-0.20220128031606-5dcb579146d8 h1:/8HWaitlByH7lpZGBpwBfUBu+KymzS6ZAnhWSUcMoBI=
+github.com/thomas-nguy/gravity-bridge/module v0.2.18-0.20220128031606-5dcb579146d8/go.mod h1:IFm0SoZGHzA8c6NH3YyRSl2sGT7qdxY+DimCrP2+J+4=
 github.com/tidwall/gjson v1.6.7/go.mod h1:zeFuBCIqD4sN/gmqBzZ4j7Jd6UcA2Fc56x7QFsv+8fI=
 github.com/tidwall/match v1.0.3/go.mod h1:eRSPERbgtNPcGhD8UCthc6PmLEQXEWd3PRB5JTxsfmM=
 github.com/tidwall/pretty v1.0.2/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
