@@ -62,20 +62,13 @@ func (h SendToIbcHandler) EventID() common.Hash {
 	return SendToIbcEvent.ID
 }
 
-func (h SendToIbcHandler) Handle(
+func (h SendToIbcHandler) handle(
 	ctx sdk.Context,
 	contract common.Address,
-	topics []common.Hash,
-	data []byte,
-	_ func(contractAddress common.Address, logSig common.Hash, logData []byte),
-) error {
-	unpacked, err := SendToIbcEvent.Inputs.Unpack(data)
-	if err != nil {
-		// log and ignore
-		h.cronosKeeper.Logger(ctx).Error("log signature matches but failed to decode", "error", err)
-		return nil
-	}
-
+	senderAddress common.Address,
+	recipient string,
+	amountInt *big.Int,
+) (err error) {
 	denom, found := h.cronosKeeper.GetDenomByContract(ctx, contract)
 	if !found {
 		return fmt.Errorf("contract %s is not connected to native token", contract)
@@ -86,9 +79,8 @@ func (h SendToIbcHandler) Handle(
 	}
 
 	contractAddr := sdk.AccAddress(contract.Bytes())
-	sender := sdk.AccAddress(unpacked[0].(common.Address).Bytes())
-	recipient := unpacked[1].(string)
-	amount := sdk.NewIntFromBigInt(unpacked[2].(*big.Int))
+	sender := sdk.AccAddress(senderAddress.Bytes())
+	amount := sdk.NewIntFromBigInt(amountInt)
 	coins := sdk.NewCoins(sdk.NewCoin(denom, amount))
 
 	if types.IsSourceCoin(denom) {
@@ -111,4 +103,23 @@ func (h SendToIbcHandler) Handle(
 		return err
 	}
 	return nil
+}
+
+func (h SendToIbcHandler) Handle(
+	ctx sdk.Context,
+	contract common.Address,
+	topics []common.Hash,
+	data []byte,
+	_ func(contractAddress common.Address, logSig common.Hash, logData []byte),
+) error {
+	unpacked, err := SendToIbcEvent.Inputs.Unpack(data)
+	if err != nil {
+		// log and ignore
+		h.cronosKeeper.Logger(ctx).Info("log signature matches but failed to decode")
+		return nil
+	}
+	sender := unpacked[0].(common.Address)
+	recipient := unpacked[1].(string)
+	amount := unpacked[2].(*big.Int)
+	return h.handle(ctx, contract, sender, recipient, amount)
 }
