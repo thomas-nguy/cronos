@@ -22,9 +22,7 @@ from .utils import CONTRACTS, approve_proposal, wait_for_fn
 
 pytestmark = pytest.mark.ica
 
-# ICA is no longer wired into the app (see the "interchain accounts (ICA)" note in
-# app/app.go), so there is no controller/host port to open a channel on. Kept, and
-# skipped, so re-enabling ICA gets its test coverage back for free.
+# ICA is no longer wired into the app.
 pytest.skip("ica is not enabled", allow_module_level=True)
 
 
